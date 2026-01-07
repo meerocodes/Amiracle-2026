@@ -291,6 +291,18 @@ const Projects = ({ isLightMode }) => {
     const [isVisible, setIsVisible] = React.useState(false);
 
     React.useEffect(() => {
+        if (typeof window === 'undefined') {
+            return;
+        }
+        if (!('IntersectionObserver' in window)) {
+            setIsVisible(true);
+            return;
+        }
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            setIsVisible(true);
+            return;
+        }
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
