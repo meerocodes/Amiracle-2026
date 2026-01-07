@@ -279,9 +279,9 @@ const About = ({ isLightMode }) => {
                         }`}
                     >
                         <div className="flex flex-col gap-3 text-left">
-                            <p className="text-xs uppercase tracking-[0.4em] text-gray-400">Profile</p>
+                            <p className={`text-xs uppercase tracking-[0.4em] ${isLightMode ? 'text-gray-600' : 'text-gray-400'}`}>Profile</p>
                             <h3 className="text-3xl font-bold">Creative + Co-CEO</h3>
-                            <p className={`${isLightMode ? 'text-gray-600' : 'text-gray-300'}`}>
+                            <p className={`${isLightMode ? 'text-gray-700' : 'text-gray-300'}`}>
                                 Linkify Solutions is where we ship data-driven e-commerce systems. Oudie Heaven Scent is where we craft luxury fragrance moments.
                                 I bridge both worlds by leading UX/UI, product ops, and experimentation so new drops stay sharp from desktop to mobile.
                             </p>
@@ -293,7 +293,7 @@ const About = ({ isLightMode }) => {
                                 { label: 'Cities Served', value: '12' },
                             ].map((item) => (
                                 <div key={item.label} className="p-4 rounded-2xl border border-white/10 backdrop-blur-md">
-                                    <p className={`text-xs uppercase tracking-[0.3em] ${isLightMode ? 'text-gray-500' : 'text-gray-400'}`}>{item.label}</p>
+                                    <p className={`text-xs uppercase tracking-[0.3em] ${isLightMode ? 'text-gray-600' : 'text-gray-400'}`}>{item.label}</p>
                                     <p className="text-xl font-bold mt-2">{item.value}</p>
                                 </div>
                             ))}
@@ -314,7 +314,7 @@ const About = ({ isLightMode }) => {
                                     <h4 className="text-xl font-semibold">{item.title}</h4>
                                     <span className="text-xs font-mono px-3 py-1 rounded-full border border-white/20">{`0${idx + 1}`}</span>
                                 </div>
-                                <p className={`${isLightMode ? 'text-gray-600' : 'text-gray-300'}`}>{item.description}</p>
+                                <p className={`${isLightMode ? 'text-gray-700' : 'text-gray-300'}`}>{item.description}</p>
                             </div>
                         ))}
                     </div>

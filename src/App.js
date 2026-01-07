@@ -7,10 +7,10 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 function App() {
-  // Initialize the theme based on localStorage or default to dark mode (false)
+  // Initialize the theme based on localStorage or default to light mode (true)
   const [isLightMode, setIsLightMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme ? savedTheme === 'light' : false;
+    return savedTheme ? savedTheme === 'light' : true;
   });
 
   // Update localStorage whenever the theme changes

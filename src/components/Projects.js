@@ -107,7 +107,7 @@ const passionProjects = [
             'Centralizes halaqa programming with live schedules, attendance tracking, class decks, and threaded Q&A. Admin tools let mentors launch courses, upload slides, and manage cohorts without friction.',
         stack: 'Next.js · Supabase · Tailwind · Magic Auth',
         status: 'Live beta',
-        cta: { label: 'Visit HalaqaHub', href: 'https://halaqahub.bolt.host/', external: true },
+        cta: { label: 'Visit HalaqaHub', href: 'https://halaqahub.com', external: true },
     },
     {
         id: 'oudie-erp',
