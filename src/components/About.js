@@ -185,7 +185,7 @@ const About = ({ isLightMode }) => {
                     className="absolute inset-0 transition-all duration-500"
                     style={{
                         background: `radial-gradient(circle at ${accentPos.x}% ${accentPos.y}%, ${
-                            isLightMode ? 'rgba(59,130,246,0.22)' : 'rgba(147,197,253,0.22)'
+                            isLightMode ? 'rgba(37,99,235,0.28)' : 'rgba(147,197,253,0.22)'
                         }, transparent 45%)`,
                         mixBlendMode: isLightMode ? 'multiply' : 'screen',
                         opacity: isMobile ? 0.4 : 0.5,

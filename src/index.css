@@ -416,7 +416,68 @@ html, body {
 
 /* Section Transitions */
 .section-transition {
+    position: relative;
+    isolation: isolate;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-transition::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 2px, transparent 2px 6px),
+        linear-gradient(120deg, rgba(0, 212, 255, 0.15), rgba(179, 71, 217, 0.1), transparent 60%);
+    background-size: 160px 100%, 200% 200%;
+    mix-blend-mode: screen;
+    filter: blur(0.2px);
+}
+
+.section-transition::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background-image: inherit;
+    background-size: inherit;
+    background-position: inherit;
+    background-repeat: no-repeat;
+    mix-blend-mode: screen;
+    filter: saturate(1.1) contrast(1.05);
+}
+
+.theme-glitch-active .section-transition::after {
+    animation: glitch-static 0.85s steps(10, end);
+}
+
+.theme-glitch-active .section-transition::before {
+    animation: glitch-image 0.85s steps(8, end);
+}
+
+@keyframes glitch-image {
+    0% { opacity: 0; clip-path: inset(0 0 0 0); transform: translate3d(0, 0, 0); }
+    8% { opacity: 0.18; clip-path: inset(8% 0 80% 0); transform: translate3d(-6px, 0, 0); }
+    18% { opacity: 0.24; clip-path: inset(58% 0 30% 0); transform: translate3d(7px, 0, 0); }
+    28% { opacity: 0.2; clip-path: inset(32% 0 50% 0); transform: translate3d(-9px, 0, 0); }
+    38% { opacity: 0.32; clip-path: inset(70% 0 12% 0); transform: translate3d(10px, 0, 0); }
+    52% { opacity: 0.22; clip-path: inset(18% 0 66% 0); transform: translate3d(-5px, 0, 0); }
+    68% { opacity: 0.28; clip-path: inset(42% 0 42% 0); transform: translate3d(6px, 0, 0); }
+    82% { opacity: 0.16; clip-path: inset(12% 0 76% 0); transform: translate3d(-4px, 0, 0); }
+    100% { opacity: 0; clip-path: inset(0 0 0 0); transform: translate3d(0, 0, 0); }
+}
+
+@keyframes glitch-static {
+    0% { opacity: 0; background-position: 0% 0%, 0% 0%; }
+    12% { opacity: 0.4; background-position: 18% 0%, 30% 35%; }
+    24% { opacity: 0.18; background-position: -25% 0%, 70% 10%; }
+    36% { opacity: 0.34; background-position: 40% 0%, 15% 75%; }
+    52% { opacity: 0.14; background-position: -32% 0%, 85% 30%; }
+    68% { opacity: 0.3; background-position: 26% 0%, 40% 85%; }
+    84% { opacity: 0.2; background-position: -12% 0%, 8% 55%; }
+    100% { opacity: 0; background-position: 0% 0%, 0% 0%; }
 }
 
 /* Modern Focus States */
