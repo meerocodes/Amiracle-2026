@@ -128,6 +128,18 @@ const ProjectCard = ({ project, index, totalProjects, isLightMode }) => {
     const [isHovered, setIsHovered] = React.useState(false);
 
     React.useEffect(() => {
+        if (typeof window === 'undefined') {
+            return undefined;
+        }
+        if (!('IntersectionObserver' in window)) {
+            setIsVisible(true);
+            return undefined;
+        }
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            setIsVisible(true);
+            return undefined;
+        }
+
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {

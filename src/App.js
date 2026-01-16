@@ -13,10 +13,6 @@ const GlobalNav = ({ isLightMode, toggleLightMode, showNav }) => {
 
   const toggleHamburger = () => setIsHamburgerActive((prev) => !prev);
 
-  const mobileMenuClasses = isLightMode
-    ? 'glass border-2 border-white/30 text-shadow-white'
-    : 'glass-dark border-2 border-white/20';
-
   return (
     <>
       <nav
@@ -86,65 +82,122 @@ const GlobalNav = ({ isLightMode, toggleLightMode, showNav }) => {
             </div>
           </li>
         </ul>
-        <div
-          className="block md:hidden hamburger cursor-pointer interactive p-2"
+        <button
+          type="button"
+          aria-label={isHamburgerActive ? 'Close menu' : 'Open menu'}
+          className={`block md:hidden cursor-pointer p-3 rounded-2xl border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 ${
+            isLightMode
+              ? 'bg-white/80 border-gray-300/60 shadow-[0_12px_30px_rgba(15,23,42,0.15)] hover:bg-white'
+              : 'bg-white/10 border-white/20 shadow-[0_12px_30px_rgba(0,0,0,0.35)] hover:bg-white/20'
+          }`}
           onClick={toggleHamburger}
         >
-          <span className={`block w-7 h-0.5 my-1.5 bg-white transition-all duration-500 ${isHamburgerActive ? 'rotate-45 translate-y-2.5' : ''}`}></span>
-          <span className={`block w-7 h-0.5 my-1.5 bg-white transition-all duration-500 ${isHamburgerActive ? 'opacity-0' : ''}`}></span>
-          <span className={`block w-7 h-0.5 my-1.5 bg-white transition-all duration-500 ${isHamburgerActive ? '-rotate-45 -translate-y-2.5' : ''}`}></span>
-        </div>
+          <span
+            className={`block w-7 h-0.5 rounded-full transition-all duration-300 ${
+              isLightMode ? 'bg-gray-900' : 'bg-white'
+            } ${isHamburgerActive ? 'translate-y-2 rotate-45' : ''}`}
+          ></span>
+          <span
+            className={`block w-7 h-0.5 rounded-full my-1.5 transition-all duration-300 ${
+              isLightMode ? 'bg-gray-900/70' : 'bg-white/70'
+            } ${isHamburgerActive ? 'opacity-0' : ''}`}
+          ></span>
+          <span
+            className={`block w-7 h-0.5 rounded-full transition-all duration-300 ${
+              isLightMode ? 'bg-gray-900' : 'bg-white'
+            } ${isHamburgerActive ? '-translate-y-2 -rotate-45' : ''}`}
+          ></span>
+        </button>
       </nav>
 
       {isHamburgerActive && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/70 backdrop-blur-xl transition-all duration-500 animate-fade-in">
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 backdrop-blur-2xl transition-all duration-500 animate-fade-in"
+          onClick={toggleHamburger}
+          role="presentation"
+        >
           <div
-            className={`relative ${mobileMenuClasses} rounded-3xl p-10 w-11/12 max-w-md shadow-2xl transform transition-all duration-700 animate-slide-in ring-2 ring-blue-500/30`}
+            className={`relative w-11/12 max-w-sm rounded-[28px] border px-8 pb-10 pt-6 shadow-[0_30px_80px_rgba(0,0,0,0.35)] transition-all duration-500 ${
+              isLightMode
+                ? 'bg-white/95 border-gray-200 text-gray-900'
+                : 'bg-[#0f1115]/90 border-white/10 text-white'
+            }`}
+            onClick={(event) => event.stopPropagation()}
           >
-            <button
-              onClick={toggleHamburger}
-              className="absolute top-4 right-4 text-4xl text-white hover:text-blue-400 transition-all duration-300 transform hover:scale-125 hover:rotate-90 focus:outline-none"
-            >
-              &times;
-            </button>
-            <ul className="flex flex-col gap-8 text-center mt-8 stagger-animation">
-              <li className="text-2xl hover:text-white transition-all duration-300 hover:scale-110 transform drop-shadow-md hover:drop-shadow-[0_0_15px_rgba(0,191,255,0.8)]">
-                <a href="#skills" onClick={toggleHamburger} className="font-mono">
+            <div className="flex items-center justify-between">
+              <span className="text-xs uppercase tracking-[0.4em] opacity-60">Menu</span>
+              <button
+                onClick={toggleHamburger}
+                className={`h-10 w-10 rounded-full border text-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                  isLightMode
+                    ? 'border-gray-200 text-gray-700 hover:bg-gray-100'
+                    : 'border-white/10 text-white/80 hover:bg-white/10'
+                }`}
+                aria-label="Close menu"
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <ul className="mt-8 flex flex-col gap-4">
+              <li>
+                <a
+                  href="#skills"
+                  onClick={toggleHamburger}
+                  className={`flex items-center justify-between rounded-2xl px-4 py-3 text-lg font-mono transition-all duration-300 ${
+                    isLightMode
+                      ? 'bg-gray-50 hover:bg-gray-100'
+                      : 'bg-white/5 hover:bg-white/10'
+                  }`}
+                >
                   {"// skills"}
-                </a>
-              </li>
-              <li className="text-2xl hover:text-white transition-all duration-300 hover:scale-110 transform drop-shadow-md hover:drop-shadow-[0_0_15px_rgba(0,191,255,0.8)]">
-                <a href="#projects" onClick={toggleHamburger} className="font-mono">
-                  {"// projects"}
-                </a>
-              </li>
-              <li className="text-2xl hover:text-white transition-all duration-300 hover:scale-110 transform drop-shadow-md hover:drop-shadow-[0_0_15px_rgba(0,191,255,0.8)]">
-                <a href="#contact" onClick={toggleHamburger} className="font-mono">
-                  {"// get in touch"}
+                  <i className="fa-solid fa-arrow-right text-sm opacity-60"></i>
                 </a>
               </li>
               <li>
+                <a
+                  href="#projects"
+                  onClick={toggleHamburger}
+                  className={`flex items-center justify-between rounded-2xl px-4 py-3 text-lg font-mono transition-all duration-300 ${
+                    isLightMode
+                      ? 'bg-gray-50 hover:bg-gray-100'
+                      : 'bg-white/5 hover:bg-white/10'
+                  }`}
+                >
+                  {"// projects"}
+                  <i className="fa-solid fa-arrow-right text-sm opacity-60"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  onClick={toggleHamburger}
+                  className={`flex items-center justify-between rounded-2xl px-4 py-3 text-lg font-mono transition-all duration-300 ${
+                    isLightMode
+                      ? 'bg-gray-50 hover:bg-gray-100'
+                      : 'bg-white/5 hover:bg-white/10'
+                  }`}
+                >
+                  {"// get in touch"}
+                  <i className="fa-solid fa-arrow-right text-sm opacity-60"></i>
+                </a>
+              </li>
+              <li className="mt-2">
                 <div
                   onClick={() => {
                     toggleLightMode();
                     toggleHamburger();
                   }}
-                  className="flex items-center justify-center gap-3 cursor-pointer hover:scale-110 transition-all duration-300"
+                  className={`flex items-center justify-between rounded-2xl px-4 py-3 text-sm uppercase tracking-[0.3em] transition-all duration-300 ${
+                    isLightMode
+                      ? 'bg-gray-50 hover:bg-gray-100'
+                      : 'bg-white/5 hover:bg-white/10'
+                  }`}
                 >
-                  <div className="w-16 h-8 bg-gray-600 rounded-full relative transition-all duration-300 pulse-glow">
-                    <div
-                      className={`w-8 h-8 ${
-                        isLightMode ? 'bg-gradient-to-r from-yellow-400 to-orange-500' : 'bg-gradient-to-r from-blue-400 to-purple-500'
-                      } rounded-full absolute top-0 left-0 transition-all duration-300 ${
-                        isLightMode ? 'translate-x-8' : 'translate-x-0'
-                      } shadow-lg flex items-center justify-center`}
-                    >
-                      <i className={`${isLightMode ? 'fa-solid fa-sun' : 'fa-solid fa-moon'} text-white text-sm`}></i>
-                    </div>
+                  <span>{isLightMode ? 'Light mode' : 'Dark mode'}</span>
+                  <div className="flex items-center gap-2 text-base normal-case">
+                    <i className={`${isLightMode ? 'fa-solid fa-sun text-amber-500' : 'fa-solid fa-moon text-blue-300'}`}></i>
+                    <span className="text-xs opacity-70">{isLightMode ? 'switch' : 'switch'}</span>
                   </div>
-                  <span className="text-xl font-mono">
-                    {isLightMode ? 'go dark' : 'go light'}
-                  </span>
                 </div>
               </li>
             </ul>
