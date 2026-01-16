@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from './components/Header';
 import About from './components/About';
 import Skills from './components/Skills';
@@ -20,9 +20,12 @@ const GlobalNav = ({ isLightMode, toggleLightMode, showNav }) => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 flex items-center justify-between p-6 z-[60] glass-dark transition-all duration-500 hover:backdrop-blur-xl border-b border-white/10 ${
-          showNav ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        }`}
+        className="fixed top-0 left-0 right-0 flex items-center justify-between p-6 z-[60] glass-dark hover:backdrop-blur-xl border-b border-white/10"
+        style={{
+          transform: showNav ? 'translateY(0)' : 'translateY(-110%)',
+          opacity: showNav ? 1 : 0,
+          transition: 'transform 0.45s ease, opacity 0.45s ease',
+        }}
       >
         <a href="#header" className="logoLink group">
           <img
@@ -152,48 +155,81 @@ const GlobalNav = ({ isLightMode, toggleLightMode, showNav }) => {
   );
 };
 
-const SocialPanel = () => (
-  <div className="fixed left-0 top-1/2 -translate-y-1/2 z-[55]">
-    <div
-      className="w-12 glass-dark p-2 rounded-r-xl transition-all ease-in-out duration-700 flex flex-col items-center hover:scale-105 border-r border-white/20 shadow-lg group-hover:shadow-xl"
-      style={{ transform: 'translateX(0)' }}
-    >
-      <ul className="flex flex-col gap-4 text-white text-lg">
-        <li>
-          <a
-            href="https://github.com/meerocodes"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-blue-400 transition-all duration-300 hover:scale-150 block pulse-glow"
+const SocialPanel = () => {
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const savedState = localStorage.getItem('socialPanelCollapsed');
+    return savedState ? savedState === 'true' : true;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('socialPanelCollapsed', String(isCollapsed));
+  }, [isCollapsed]);
+
+  return (
+    <div className="fixed left-0 top-1/2 -translate-y-1/2 z-[55]">
+      <div
+        className={`glass-dark rounded-r-xl transition-all ease-in-out duration-700 flex flex-col items-center border-r border-white/20 shadow-lg hover:scale-105 ${
+          isCollapsed ? 'w-auto px-2 py-3' : 'w-12 p-2'
+        }`}
+      >
+        {isCollapsed ? (
+          <button
+            type="button"
+            onClick={() => setIsCollapsed(false)}
+            className="text-white text-xs tracking-[0.35em] uppercase flex flex-col items-center gap-2 hover:text-blue-400 transition-colors duration-300"
+            aria-label="Open socials panel"
           >
-            <i className="fa-brands fa-github-alt"></i>
-          </a>
-        </li>
-        <li>
-          <a
-            href="mailto:amir.ar@outook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-blue-400 transition-all duration-300 hover:scale-150 block pulse-glow"
-          >
-            <i className="fa-solid fa-inbox"></i>
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://www.linkedin.com/in/meerocodes"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-blue-400 transition-all duration-300 hover:scale-150 block pulse-glow"
-          >
-            <i className="fa-brands fa-linkedin-in"></i>
-          </a>
-        </li>
-      </ul>
-      <i className="fa-solid fa-arrow-left text-white mt-3 text-sm hover:text-blue-400 transition-colors duration-300 animate-pulse"></i>
+            <span className="[writing-mode:vertical-rl] rotate-180">Socials</span>
+            <i className="fa-solid fa-arrow-right text-sm"></i>
+          </button>
+        ) : (
+          <>
+            <ul className="flex flex-col gap-4 text-white text-lg">
+              <li>
+                <a
+                  href="https://github.com/meerocodes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-all duration-300 hover:scale-150 block pulse-glow"
+                >
+                  <i className="fa-brands fa-github-alt"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:amir.ar@outook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-all duration-300 hover:scale-150 block pulse-glow"
+                >
+                  <i className="fa-solid fa-inbox"></i>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/meerocodes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-all duration-300 hover:scale-150 block pulse-glow"
+                >
+                  <i className="fa-brands fa-linkedin-in"></i>
+                </a>
+              </li>
+            </ul>
+            <button
+              type="button"
+              onClick={() => setIsCollapsed(true)}
+              className="text-white mt-3 text-sm hover:text-blue-400 transition-colors duration-300 animate-pulse"
+              aria-label="Collapse socials panel"
+            >
+              <i className="fa-solid fa-arrow-left"></i>
+            </button>
+          </>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 function App() {
   // Initialize the theme based on localStorage or default to light mode (true)
@@ -203,6 +239,7 @@ function App() {
   });
   const [isThemeTransitioning, setIsThemeTransitioning] = useState(false);
   const [showNav, setShowNav] = useState(true);
+  const lastScrollYRef = useRef(0);
 
   // Update localStorage whenever the theme changes
   useEffect(() => {
@@ -215,21 +252,34 @@ function App() {
   };
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
+    const getScrollY = () => {
+      const scrollElement = document.scrollingElement || document.documentElement;
+      return scrollElement ? scrollElement.scrollTop : window.pageYOffset || 0;
+    };
+
+    lastScrollYRef.current = getScrollY();
+
     const handleScroll = () => {
-      const currentY = window.scrollY;
+      const currentY = getScrollY();
+      const delta = currentY - lastScrollYRef.current;
+
       if (currentY <= 10) {
         setShowNav(true);
-      } else if (currentY < lastScrollY) {
-        setShowNav(true);
-      } else if (currentY > lastScrollY) {
+      } else if (delta > 0) {
         setShowNav(false);
+      } else if (delta < 0) {
+        setShowNav(true);
       }
-      lastScrollY = currentY;
+
+      lastScrollYRef.current = currentY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    document.addEventListener('scroll', handleScroll, { passive: true, capture: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('scroll', handleScroll, { capture: true });
+    };
   }, []);
 
   useEffect(() => {
